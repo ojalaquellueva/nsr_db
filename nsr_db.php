@@ -50,11 +50,13 @@ Enter 'Yes' to proceed, or 'No' to cancel: ";
 $proceed=responseYesNoDie($msg_proceed);
 if ($proceed===false) die("\r\nOperation cancelled\r\n");
 
-// Confirm replacement of entire database if requested
-if ($replace_db) {
-	$msg_conf_replace_db="\r\nPrevious database `$DB` will be deleted! Are you sure you want to proceed? (Y/N): ";
-	$replace_db=responseYesNoDie($msg_conf_replace_db);
-	if ($replace_db===false) die ("\r\nOperation cancelled\r\n");
+if ( db_exists($DB, $USER, $PWD) ) {
+	// Confirm replacement of entire database if requested
+	if ($replace_db) {
+		$msg_conf_replace_db="\r\nPrevious database `$DB` will be deleted! Are you sure you want to proceed? (Y/N): ";
+		$replace_db=responseYesNoDie($msg_conf_replace_db);
+		if ($replace_db===false) die ("\r\nOperation cancelled\r\n");
+	}
 }
 
 // Check that folder for each source is present
@@ -64,10 +66,6 @@ include_once "check_sources.inc";
 echo "\r\nBegin operation\r\n";
 include $timer_on;
 include "db_connect.inc";
-/*
-$dbh = mysqli_connect($HOST,$USER,$PWD,FALSE,128);
-if (!$dbh) die("\r\nCould not connect to database!\r\n");
-*/
 
 ////////////////////////////////////////////////////////////
 // Generate new empty database

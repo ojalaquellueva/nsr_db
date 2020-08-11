@@ -78,27 +78,48 @@ $usr_array=array(
 // Include paths and filenames
 //////////////////////////////////////////////////
 
+// Base directory
+// All other paths set relative to this one
+// Should be one above this directory (application code repo)
 $base_dir = "/home/boyle/nsr/";
+
+// Application code directory (git repo)
 $app_dir = $base_dir . "nsr_db/";
+
+// Data directory
+// Keep outside repo
 $data_dir = $base_dir . "data/db/";
 
-// Path to general php functions and other generic include files
-//$global_utilities_path = "/home/boyle/global_utilities/php/";	
-$global_utilities_path = $base_dir."includes/php/";
-//$local_utilities_path = "functions/";
+// DB config file (DB name, users, passwords
+// Keep outside repo
+$config_dir = $base_dir . "config/";
 
-include $global_utilities_path."functions.inc";
-include $global_utilities_path."taxon_functions.inc";
-include $global_utilities_path."sql_functions.inc";
-include $global_utilities_path."geo_functions.inc";
-$timer_on=$global_utilities_path."timer_on.inc";
-$timer_off=$global_utilities_path."timer_off.inc";
+// Path to general php functions and other generic include files
+// Subdirectory "includes/" is a git submodule
+$global_utilities_path = $app_dir."includes/php/";
+
+// Path to local functions not in submodule "includes"
+// Recommend move to submodule once functions have 
+// been tested
+$local_utilities_path = $app_dir."functions/";
 
 //////////////////////////////////////////////////
 // Db connection file
 //////////////////////////////////////////////////
 
-$config_file = "../../db_config_nsr_db.inc";
+$config_file = $config_dir . "db_config_nsr_db.inc";
+
+///////////////////////////////////////////////////
+// Include files (functions, etc.)
+///////////////////////////////////////////////////
+
+include $global_utilities_path."functions.inc";
+include $global_utilities_path."taxon_functions.inc";
+include $global_utilities_path."sql_functions.inc";
+//include $global_utilities_path."geo_functions.inc";
+$timer_on=$global_utilities_path."timer_on.inc";
+$timer_off=$global_utilities_path."timer_off.inc";
+include $local_utilities_path."functions_local.inc.php";
 
 //////////////////////////////////////////////////
 // Replace database? (true/false)
