@@ -65,7 +65,8 @@ include_once "check_sources.inc";
 // Start timer and connect to mysql
 echo "\r\nBegin operation\r\n";
 include $timer_on;
-include "db_connect.inc";
+$echo_on = true;		// Display messages and SQL for debugging
+$SQL_display = true;	// Displays final SQL statement
 
 ////////////////////////////////////////////////////////////
 // Generate new empty database
@@ -74,18 +75,21 @@ include "db_connect.inc";
 if ($replace_db) {
 	echo "\r\n#############################################\r\n";
 	echo "Creating new database:\r\n\r\n";	
+	include "mysql_connect.inc";	// Connect without specifying database
 	
 	// Drop and replace entire database
-	echo "Dropping previous database `$DB`...";
+	echo "Creating database `$DB`...";
 	$sql_create_db="
 		DROP DATABASE IF EXISTS `".$DB."`;
 		CREATE DATABASE `".$DB."`;
 		USE `".$DB."`;
 	";
-	sql_execute_multiple($dbh, $sql_create_db);
+	sql_execute_multiple($dbm, $sql_create_db);
 	echo "done\r\n";
+	mysqli_close($dbm);
 	
 	// Replace core tables
+	include "db_connect.inc"; // Reconnect to the new DB 
 	include_once "create_nsr_db/params.inc";
 	include_once "create_nsr_db/create_tables.inc";
 	echo "Populating political division tables:\r\n";
@@ -98,11 +102,13 @@ if ($replace_db) {
 	include_once "create_nsr_db/fix_errors.inc";
 	//include_once "create_nsr_db/make_cclist.inc";
 	include_once "create_nsr_db/gf_lookup.inc";
+} else {
+	include "db_connect.inc";
 }
 
 // Re-connect to database, in case previous step skipped
-$sql="USE `".$DB."`;";
-sql_execute_multiple($dbh, $sql);
+//$sql="USE `".$DB."`;";
+//sql_execute_multiple($dbh, $sql);
 
 // Check that required custom functions are present in target db, 
 // and install them if missing. This check is essential if database 

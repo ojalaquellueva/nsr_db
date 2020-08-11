@@ -96,7 +96,7 @@ $config_dir = $base_dir . "config/";
 
 // Path to general php functions and other generic include files
 // Subdirectory "includes/" is a git submodule
-$global_utilities_path = $app_dir."includes/php/";
+$global_utilities_path = $app_dir."php_includes/php/";
 
 // Path to local functions not in submodule "includes"
 // Recommend move to submodule once functions have 
