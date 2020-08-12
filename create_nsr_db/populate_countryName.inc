@@ -9,7 +9,7 @@ echo "Populating political division tables:\r\n";
 echo "  countryName...";
 $sql="
 LOAD DATA $local INFILE '$datapath$file_country_name' 
-INTO TABLE $tbl_country 
+INTO TABLE countryName 
 $fields_terminated_by 
 $optionally_enclosed_by 
 $lines_terminated_by 

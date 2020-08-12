@@ -9,7 +9,7 @@ echo "Loading checklist metadata to table poldiv_source_staging:\r\n";
 // Converting empty lists into arbitrary non-matching value
 // so SQL doesn't fail
 if ($cclist_countries=="") {
-	$cclist_countries_inlist="12345";
+	$cclist_countries_inlist="'arbitrarynonmatchingvalue'";
 } else {
 	$cclist_countries_inlist=$cclist_countries;
 }

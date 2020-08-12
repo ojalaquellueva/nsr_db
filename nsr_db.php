@@ -106,10 +106,6 @@ if ($replace_db) {
 	include "db_connect.inc";
 }
 
-// Re-connect to database, in case previous step skipped
-//$sql="USE `".$DB."`;";
-//sql_execute_multiple($dbh, $sql);
-
 // Check that required custom functions are present in target db, 
 // and install them if missing. This check is essential if database 
 // has been replaced

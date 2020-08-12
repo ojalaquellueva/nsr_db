@@ -3,9 +3,19 @@
 ////////////////////////////////////////////////
 // Adds users and permissions to final database
 //
-// MUST have admin-level permission to do this!
+// User running this script MUST have admin-level 
+// permission to do this!
 // Requires array $usr_array of user names and
 // attributes, set in global_params file
+//
+// To grant super use privileges for the user running the
+// DB pipeline, including this script, log in as root and
+// run the following:
+// GRANT ALL PRIVILEGES ON `%`.* TO '[theuser]'@'localhost' 
+// IDENTIFIED BY '[password]' WITH GRANT OPTION;
+// FLUSH PRIVILEGES;
+// Don't forget IDENTIFIED BY and GRANT options, 
+// won't work without it
 ////////////////////////////////////////////////
 
 echo "Setting permissions on completed db '$DB' for user:\r\n";

@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS poldiv_source;
 CREATE TABLE poldiv_source (
 poldiv_source_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,  
 poldiv_id INT(11) UNSIGNED NOT NULL, 
-poldiv_name VARCHAR(100) NOT NULL,
+poldiv_name VARCHAR(100) DEFAULT NULL,
 poldiv_type enum('country','state_province','county_parish') NOT NULL, 
 source_id INT(11) UNSIGNED NOT NULL, 
 checklist_type VARCHAR(50) DEFAULT NULL,
@@ -98,7 +98,7 @@ DROP TABLE IF EXISTS countryName;
 CREATE TABLE countryName (
 countryNameID INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
 countryName VARCHAR(100) DEFAULT NULL,
-countryID INT(11) UNSIGNED NOT NULL,
+countryID INT(11) UNSIGNED DEFAULT NULL,
 isoCode VARCHAR(2) DEFAULT NULL,
 countryCode3Char VARCHAR(3) DEFAULT NULL,
 countryNameStd VARCHAR(100) DEFAULT NULL,

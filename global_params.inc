@@ -49,6 +49,9 @@ $src_array=array(
 	"enquist",
 	"vascan"
 );
+$src_array=array(
+	"weakley"
+);
 
 //////////////////////////////////////////////////
 // Users & access levels
@@ -116,7 +119,7 @@ $config_file = $config_dir . "db_config_nsr_db.inc";
 include $global_utilities_path."functions.inc";
 include $global_utilities_path."taxon_functions.inc";
 include $global_utilities_path."sql_functions.inc";
-//include $global_utilities_path."geo_functions.inc";
+include $global_utilities_path."geo_functions.inc";
 $timer_on=$global_utilities_path."timer_on.inc";
 $timer_off=$global_utilities_path."timer_off.inc";
 include $local_utilities_path."functions_local.inc.php";
@@ -134,7 +137,7 @@ include $local_utilities_path."functions_local.inc.php";
 // the source(s) listed in $src_array.
 //
 //////////////////////////////////////////////////
-$replace_db = true;
+$replace_db = false;
 
 //////////////////////////////////////////////////
 // Drop raw data tables after import complete?
