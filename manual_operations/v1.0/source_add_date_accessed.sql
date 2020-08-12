@@ -1,5 +1,7 @@
--- adds column date_accessed to table nsr.source
--- This is now done automatically by pipeline
+-- --------------------------------------------------
+-- Adds column date_accessed to table nsr.source
+-- Now in pipeline, do not run for later versions
+-- --------------------------------------------------
 
 alter table source
 add column date_accessed varchar(10) default null;

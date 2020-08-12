@@ -4,14 +4,14 @@
 -- Permanent fix will be applied next time database is rebuilt
 -- -------------------------------------------------------------------
 
-USE nsr;
+set @srcid:=9;   -- source_id for "usda"; adjust accordingly
 
 -- back up existing values
 DROP TABLE IF EXISTS distribution_usda_native_status_bak;
 CREATE TABLE distribution_usda_native_status_bak
 SELECT distribution_id, source_id, taxon, state_province, native_status
 FROM distribution
-WHERE source_id=9
+WHERE source_id=@srcid
 ;
 
 -- To restore:
@@ -19,7 +19,7 @@ WHERE source_id=9
 -- join distribution_usda_native_status_bak b
 -- on a.distribution_id=b.distribution_id
 -- set a.native_status=b.native_status
--- where a.source_id=9
+-- where a.source_id=@srcid
 -- ;
 
 -- 
@@ -29,7 +29,7 @@ WHERE source_id=9
 -- Subspecific taxa & species
 UPDATE distribution
 SET native_status='native'
-WHERE source_id=9
+WHERE source_id=@srcid
 AND taxon_rank IN ('fo.','subsp.','var.','species')
 AND native_status='unknown'
 ;
@@ -41,7 +41,7 @@ ADD COLUMN genus VARCHAR(100) DEFAULT NULL
 UPDATE distribution
 SET genus=strSplit(taxon,' ',1)
 WHERE taxon_rank NOT IN ('hybrid','family')
-AND source_id=9
+AND source_id=@srcid
 ;
 ALTER TABLE distribution
 ADD INDEX (genus);
@@ -50,13 +50,13 @@ ADD INDEX (genus);
 UPDATE distribution a JOIN (
 SELECT DISTINCT genus 
 FROM distribution
-WHERE source_id=9
+WHERE source_id=@srcid
 AND taxon_rank IN ('fo.','subsp.','var.','species')
 AND native_status='native'
 ) b
 ON a.genus=b.genus
 SET a.native_status='native'
-WHERE a.source_id=9
+WHERE a.source_id=@srcid
 AND a.taxon_rank='genus' 
 AND a.native_status='unknown'
 ; 
@@ -69,7 +69,7 @@ UPDATE distribution a JOIN distribution_usda_native_status_bak b
 ON a.distribution_id=b.distribution_id
 SET a.changed=1
 WHERE a.native_status<>b.native_status
-AND a.source_id=9
+AND a.source_id=@srcid
 ;
 ALTER TABLE distribution ADD INDEX (changed);
 
@@ -107,7 +107,7 @@ AND county_parish IS NOT NULL
 -- ON a.species=b.taxon 
 -- AND a.poldiv_full=b.poldiv_full
 -- SET del=1
--- WHERE b.source_id=9
+-- WHERE b.source_id=@srcid
 -- AND b.changed=1
 -- ;
 
@@ -115,7 +115,7 @@ AND county_parish IS NOT NULL
 UPDATE cache a JOIN (
 SELECT DISTINCT taxon
 FROM distribution 
-WHERE source_id=9
+WHERE source_id=@srcid
 ) b
 ON a.species=b.taxon 
 SET del=1

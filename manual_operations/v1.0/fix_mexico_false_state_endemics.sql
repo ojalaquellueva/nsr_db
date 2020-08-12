@@ -3,18 +3,18 @@
 -- 2019-05-29
 -- -------------------------------------------------------------------------
 
-USE nsr;
+set @srcid:=5;   -- source_id for source "mexico"
 
 -- List species in Mexico list which are found in only one state but not 
 -- endemic to Mexico
 SELECT DISTINCT state_end.taxon, state_end.country, state_end.state_province, ctry_end.taxon, ctry_end.country, ctry_end.state_province 
 FROM 
 (
-SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=7 AND native_status='endemic' AND state_province IS NOT NULL
+SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=@srcid AND native_status='endemic' AND state_province IS NOT NULL
 ) AS state_end
 LEFT JOIN 
 (
-SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=7 AND native_status='endemic' AND state_province IS NULL
+SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=@srcid AND native_status='endemic' AND state_province IS NULL
 ) AS ctry_end
 ON state_end.taxon=ctry_end.taxon
 WHERE ctry_end.taxon IS NULL
@@ -26,8 +26,8 @@ ORDER BY state_end.taxon, state_end.country, state_end.state_province
 -- 
 
 -- Backup
-CREATE TABLE distribution_bak_20190529 LIKE distribution;
-INSERT INTO distribution_bak_20190529 SELECT * FROM distribution;
+CREATE TABLE distribution_bak LIKE distribution;
+INSERT INTO distribution_bak SELECT * FROM distribution;
 
 -- Add temporary new status column
 ALTER TABLE distribution 
@@ -46,18 +46,18 @@ UPDATE distribution a JOIN
 SELECT DISTINCT state_end.taxon, state_end.country, state_end.state_province
 FROM 
 (
-SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=7 AND native_status='endemic' AND state_province IS NOT NULL
+SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=@srcid AND native_status='endemic' AND state_province IS NOT NULL
 ) AS state_end
 LEFT JOIN 
 (
-SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=7 AND native_status='endemic' AND state_province IS NULL
+SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=@srcid AND native_status='endemic' AND state_province IS NULL
 ) AS ctry_end
 ON state_end.taxon=ctry_end.taxon
 WHERE ctry_end.taxon IS NULL
 ) AS b
 ON a.taxon=b.taxon AND a.country=b.country AND a.state_province=b.state_province
 SET a.native_status_new='native'
-WHERE a.source_id=7
+WHERE a.source_id=@srcid
 ;
 
 -- Index it
@@ -67,7 +67,7 @@ ADD INDEX (native_status_new);
 -- Inspect before updating
 SELECT source_id, taxon, country, state_province, native_status, native_status_new 
 FROM distribution
-WHERE source_id=7 AND native_status='endemic'
+WHERE source_id=@srcid AND native_status='endemic'
 ORDER BY taxon, country, state_province 
 ;
 

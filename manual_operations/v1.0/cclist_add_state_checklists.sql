@@ -3,8 +3,6 @@
 -- 2019-05-29
 -- -------------------------------------------------------------------------
 
-USE nsr;
-
 CREATE TABLE cclist_bak LIKE cclist;
 INSERT INTO cclist_bak SELECT * FROM cclist;
 
