@@ -50,7 +50,7 @@ $src_array=array(
 	"vascan"
 );
 $src_array=array(
-	"mexico"
+	"powo"
 );
 
 //////////////////////////////////////////////////
@@ -71,9 +71,7 @@ $src_array=array(
 //////////////////////////////////////////////////
 
 $usr_array=array(
-	"bien_read|read",
-	"bien_web|read",
-	"bien_write|write",
+	"nsr_read|read",
 	"nsr|write"
 );
 

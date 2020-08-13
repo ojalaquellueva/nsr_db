@@ -62,13 +62,11 @@ foreach ($usr_array as $usr_attributes) {
 		";
 	} elseif ( $level == 'write' ) {
 		$sql_perm = $sql_perm . " 
-		GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-		ON $DB.* TO '$usr'@'localhost'
-		;
-		GRANT DROP ON TABLE $DB.* TO '$usr'@'localhost'
-		;
-		GRANT CREATE ON TABLE $DB.* TO '$usr'@'localhost'
-		;
+		GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, CREATE ROUTINE
+		ON $DB.* TO '$usr'@'localhost';
+		GRANT EXECUTE ON $DB.* TO '$usr'@'localhost';
+		GRANT DROP ON TABLE $DB.* TO '$usr'@'localhost';
+		GRANT CREATE ON TABLE $DB.* TO '$usr'@'localhost';
 		";	
 	} elseif ( $level == 'admin' ) {
 		$sql_perm = $sql_perm . " 
