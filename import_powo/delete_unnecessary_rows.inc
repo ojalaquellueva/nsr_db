@@ -7,7 +7,7 @@
 
 echo "  Removing unnecessary rows:\r\n";
 
-echo "    No area...";
+echo "    area_name IS NULL...";
 $sql="
 DELETE FROM $tbl_raw
 WHERE area_name IS NULL

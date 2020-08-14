@@ -11,10 +11,10 @@ include "create_raw_data_tables.inc";
 // import text files to raw data tables
 include "import.inc";
 
+echo "Standardizing " . $src . "_raw:\r\n";
+
 // Remove rows not relevant to NSR
 include "delete_unnecessary_rows.inc";
-
-echo "Standardizing " . $src . "_raw:\r\n";
 
 // separate taxon name from author and dump to taxon field
 include "standardize_rank.inc";
@@ -22,16 +22,18 @@ include "standardize_rank.inc";
 // standardize native status codes
 include "standardize_status.inc";
 
+// Scrub regions with GNRS API
+include "scrub_regions.inc";
+
+die("\nSTOPPING...\n");
+
+
 // standardize region names and delete superfluous records
 include "standardize_regions.inc";
 
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
-
-
-die("\nSTOPPING...\n");
-
 
 // load metadata on regions covered by this source
 include "create_poldiv_source_staging.inc";

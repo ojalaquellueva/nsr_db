@@ -2,9 +2,10 @@
 // Create mysql tables identical in structure to raw text files
 // And combines into single staging table
 
-$tbl_raw=$src."_raw";
-echo "Creating raw data table `$tbl_raw`...";
+echo "Creating raw data tables\r\n";
 
+$tbl_raw=$src."_raw";
+echo "  `$tbl_raw`...";
 $sql="
 DROP TABLE IF EXISTS `$tbl_raw`;
 CREATE TABLE $tbl_raw (
@@ -41,6 +42,23 @@ threatStatus VARCHAR(250) DEFAULT NULL
 ";
 sql_execute_multiple($dbh, $sql);
 echo "done";
-	
+
+echo "  `region_codes`...";
+$sql="
+DROP TABLE IF EXISTS `region_codes`;
+CREATE TABLE region_codes (
+seq INT(11) NOT NULL,
+code VARCHAR(250),
+region VARCHAR(250),
+alt_region VARCHAR(250),
+country VARCHAR(250),
+notes VARCHAR(250),
+INDEX(code),
+INDEX(region)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+";
+sql_execute_multiple($dbh, $sql);
+echo "done";
+
 ?>
 

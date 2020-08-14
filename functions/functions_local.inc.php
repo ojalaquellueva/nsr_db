@@ -56,5 +56,23 @@ function NA_to_null($db_con, $tbl) {
 	return true;
 }
 
+function csvtoarray($file,$delimiter,$lines)
+{
+    if (($handle = fopen($file, "r")) === false) {
+    	die("can't open the file.");
+    }
+
+    $f_csv = fgetcsv($handle, 4000, $delimiter);
+    $f_array = array();
+
+    while ($row = fgetcsv($handle, 4000, $delimiter)) {
+            $f_array[] = array_combine($f_csv, $row);
+    }
+
+    fclose($handle);
+    $f_array = array_slice($f_array, 0, $lines); // Get requested subset
+    
+    return $f_array;
+}
 
 ?>

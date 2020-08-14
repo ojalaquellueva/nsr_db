@@ -49,7 +49,7 @@ sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
-echo "  Marking duplicate records...";
+echo "    Marking duplicate records...";
 $sql="
 UPDATE $tbl_raw r JOIN
 (

@@ -71,10 +71,14 @@ $replace=true;
 
 //////////////////////////////////////////////////
 // Raw data file parameters
+// See README in data directory for details
 //////////////////////////////////////////////////
-// Names of file you will be importing
+// Name of main file you will be importing
 $file_raw = "POW_combined.20200731.final.txt";
 $file_raw = "POWO_sample.txt";	// For testing
+
+// TDWG region codes
+$file_raw_codes = "TDWG_region_codes.csv";
 
 // names of destination mysql table
 $tbl_raw=$src."_raw";
@@ -82,7 +86,7 @@ $tbl_raw=$src."_raw";
 // Directory in which data for this source are stored
 $datapath = $data_dir . $source_name."/";		
 
-// Import parameters for text file
+// Import parameters for main text file
 // Needed for 'LOAD DATA INFILE' statement
 // Set any variable to empty string to remove entirely
 $local = " LOCAL ";	// LOCAL keyword
