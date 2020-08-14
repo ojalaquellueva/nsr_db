@@ -24,10 +24,10 @@ echo "    Setting NA to NULL...";
 if (!(NA_to_null($dbh, $tbl_raw))) die("Error\r\n.");
 echo $done;
 
-echo "  `region_codes`...";
+echo "  `$tbl_region_codes`...";
 $sql = "
 LOAD DATA $local INFILE '$datapath$file_raw_codes' 
-INTO TABLE region_codes 
+INTO TABLE $tbl_region_codes 
 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '\"'
 LINES TERMINATED BY '\r\n' 
@@ -38,10 +38,10 @@ sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Setting empty strings to NULL...";
-if (!(empty_string_to_null($dbh,'region_codes'))) die("Error\r\n.");
+if (!(empty_string_to_null($dbh,$tbl_region_codes))) die("Error\r\n.");
 echo $done;
 echo "    Setting NA to NULL...";
-if (!(NA_to_null($dbh, 'region_codes'))) die("Error\r\n.");
+if (!(NA_to_null($dbh, $tbl_region_codes))) die("Error\r\n.");
 echo $done;
 
 ?>

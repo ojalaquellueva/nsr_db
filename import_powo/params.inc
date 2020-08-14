@@ -63,11 +63,17 @@ $date_accessed="2020-08-01";
 // Short list of regions covered by this source, to 250 characters
 $focal_regions="Global";
 
+// Note: $cclist_countries NOT set as parameter. Will be extracted on the fly
+// from data. Do NOT set here.
+
 // Replace previous records for this source?
 // VERY IMPORTANT
 // Set=true to replace all previous records for this source.
 // Set=false to keep existing records (name+author) and add new records only.
 $replace=true;
+
+// True to drop raw data and intermediate tables, false to drop
+$drop_raw=false;
 
 //////////////////////////////////////////////////
 // Raw data file parameters
@@ -75,7 +81,7 @@ $replace=true;
 //////////////////////////////////////////////////
 // Name of main file you will be importing
 $file_raw = "POW_combined.20200731.final.txt";
-$file_raw = "POWO_sample.txt";	// For testing
+//$file_raw = "POWO_sample.txt";	// For testing
 
 // TDWG region codes
 $file_raw_codes = "TDWG_region_codes.csv";

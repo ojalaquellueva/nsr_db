@@ -141,9 +141,9 @@ $replace_db = false;
 // Drop raw data tables after import complete?
 // (true/false)
 //////////////////////////////////////////////////
-$drop_raw=true;
-$drop_raw_force=true;		// over-rides any source-specific settings
-$drop_staging_force=true;		// over-rides any source-specific settings
+$drop_raw=false;
+$drop_raw_force=false;		// over-rides any source-specific settings
+$drop_staging_force=false;		// over-rides any source-specific settings
 
 //////////////////////////////////////////////////
 // API parameters

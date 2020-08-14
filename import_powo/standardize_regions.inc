@@ -5,49 +5,45 @@
 // and combine any duplicate records
 /////////////////////////////////////////////////////////
 
-echo "  Standardizing regions:\r\n";
+echo "Marking duplicate records:\r\n";
 
-echo "    Adding columns...";
+echo "  Creating indexes...";
 $sql="
 ALTER TABLE $tbl_raw
-ADD id INT PRIMARY KEY AUTO_INCREMENT,
-ADD COLUMN country VARCHAR(250) DEFAULT NULL,
-ADD COLUMN include INT(1) DEFAULT 0,
-ADD INDEX (include)
-;
+ADD INDEX (country)
+; 
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Populating `area_std`...";
+echo "  Setting missing values of `country` to NULL...";
 $sql="
 UPDATE $tbl_raw
-SET country=
-CASE
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-WHEN area_name='xxx' THEN 'yyy'
-ELSE area_name
-END
+SET country=NULL
+WHERE TRIM(country)=''
 ;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
+echo "  Adding column `is_dupe`...";
+$sql="
+ALTER TABLE $tbl_raw
+ADD COLUMN is_dupe INT(1) DEFAULT NULL
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "  Setting default value of `is_dupe` for non-NULL country...";
+$sql="
+UPDATE $tbl_raw
+SET is_dupe=1
+WHERE country IS NOT NULL
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
 
 echo "    Marking duplicate records...";
 $sql="
@@ -59,7 +55,7 @@ name,
 (
 SELECT id
 FROM $tbl_raw r
-WHERE $tbl_raw.taxon=r.taxon AND $tbl_raw.country=r.country
+WHERE $tbl_raw.name=r.name AND $tbl_raw.country=r.country
 ORDER BY id
 LIMIT 1
 ) AS first_id
@@ -67,7 +63,16 @@ FROM $tbl_raw
 GROUP BY country, name
 ) AS nodupes
 ON r.id=nodupes.first_id
-SET include=1
+SET is_dupe=0
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "  Adding remaining indexes...";
+$sql="
+ALTER TABLE $tbl_raw
+ADD INDEX (is_dupe)
 ;
 ";
 sql_execute_multiple($dbh, $sql);

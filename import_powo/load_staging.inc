@@ -19,13 +19,14 @@ cult_status
 )
 SELECT
 '$src',
-area_name,
+country,
 name,
 rank,
 establishment,
 NULL
 FROM $tbl_raw
-WHERE include=1
+WHERE is_dupe=0
+AND country IS NOT NULL
 ;
 ";
 sql_execute_multiple($dbh, $sql);

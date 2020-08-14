@@ -1,17 +1,9 @@
 <?php
 
 echo "Deleting raw data tables...";
-foreach($tbl_list as $tbl) {	
-	$tbl_raw = $tbl."_raw";
-	//echo "  $tbl_raw...";
-	$sql="
-	DROP TABLE $tbl_raw;	
-	";
-	sql_execute_multiple($dbh, $sql);
-}
 
 $sql="
-DROP TABLE tropicos_raw;	
+DROP TABLE IF EXISTS powo_raw, powo_poldivs, powo_poldivs_gnrs, powo_region_codes, powo_regions;	
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;	
