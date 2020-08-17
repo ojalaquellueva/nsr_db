@@ -84,7 +84,7 @@ $file_raw = "POW_combined.20200731.final.txt";
 //$file_raw = "POWO_sample.txt";	// For testing
 
 // TDWG region codes
-$file_raw_codes = "TDWG_region_codes.csv";
+$file_raw_codes = "TDWG_region_codes_edited.csv";
 
 // names of destination mysql table
 $tbl_raw=$src."_raw";

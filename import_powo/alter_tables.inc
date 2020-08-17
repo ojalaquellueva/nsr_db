@@ -44,13 +44,14 @@ echo $done;
 echo "Indexing table `$tbl_region_codes`...";
 $sql="
 ALTER TABLE $tbl_region_codes 
+ADD COLUMN poldiv_full VARCHAR(500),
 ADD INDEX (region),
-ADD INDEX (country)
+ADD INDEX (poldiv_full),
+ADD INDEX (country),
+ADD INDEX (state_province)
 ;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
-
-
 
 ?>

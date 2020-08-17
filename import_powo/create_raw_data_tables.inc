@@ -50,9 +50,12 @@ DROP TABLE IF EXISTS `$tbl_region_codes`;
 CREATE TABLE $tbl_region_codes (
 seq INT(11) NOT NULL,
 code VARCHAR(250),
-region VARCHAR(250),
-alt_region VARCHAR(250),
+code_type VARCHAR(50),
+region VARCHAR(500),
+alt_region VARCHAR(500),
 country VARCHAR(250),
+state_province VARCHAR(250),
+warning VARCHAR(500),
 notes VARCHAR(250),
 INDEX(code),
 INDEX(region)

@@ -44,11 +44,6 @@ include "load_staging.inc";
 include "create_poldiv_source_staging.inc";
 include "load_poldiv_source_staging.inc"; 
 
-
-//die("\nSTOPPING...\n");
-
-
-
 // delete raw data tables
 if ($drop_raw || $drop_raw_force) {
 	include "cleanup.inc";

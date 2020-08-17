@@ -11,109 +11,31 @@ $echo_reponse=false;
 
 echo "Scrubbing regions:\r\n";
 
-echo "  Populating verbatim political divisions in `$tbl_raw`...";
-// Must create new table to allow inserting multiple records in place of one
-// All fields included except autoincrement primary key, which is generated
-// anew
-$tbl_raw_temp = $tbl_raw . "_temp";
+echo "  Populating verbatim political divisions in `$tbl_raw`:\r\n";
+
+echo "    Joining on TDWG codes...";
 $sql="
-DROP TABLE IF EXISTS $tbl_raw_temp;
-CREATE TABLE $tbl_raw_temp LIKE $tbl_raw;
-INSERT INTO $tbl_raw_temp (
-fqId,
-query,
-modified,
-bibliographicCitation,
-genus,
-taxonomicStatus,
-kingdom,
-phylum,
-family,
-source,
-namePublishedInYear,
-name,
-authors,
-species,
-rank,
-reference,
-accepted_fqId,
-accepted_name,
-accepted_author,
-accepted_rank,
-accepted_taxonomicStatus,
-establishment,
-featureId,
-tdwgCode,
-tdwgLevel,
-area_name,
-infraspecies,
-occurrenceStatus,
-threatStatus,
-poldiv_full,
-country_verbatim,
-state_province_verbatim,
-county_parish_verbatim,
-country_id,
-state_province_id,
-county_parish_id,
-country,
-state_province,
-county_parish,
-poldiv_matched,
-match_status
-)
-SELECT 
-a.fqId,
-a.query,
-a.modified,
-a.bibliographicCitation,
-a.genus,
-a.taxonomicStatus,
-a.kingdom,
-a.phylum,
-a.family,
-a.source,
-a.namePublishedInYear,
-a.name,
-a.authors,
-a.species,
-a.rank,
-a.reference,
-a.accepted_fqId,
-a.accepted_name,
-a.accepted_author,
-a.accepted_rank,
-a.accepted_taxonomicStatus,
-a.establishment,
-a.featureId,
-a.tdwgCode,
-a.tdwgLevel,
-a.area_name,
-a.infraspecies,
-a.occurrenceStatus,
-a.threatStatus,
-a.poldiv_full,
-b.country,
-b.state_province,
-a.county_parish_verbatim,
-a.country_id,
-a.state_province_id,
-a.county_parish_id,
-a.country,
-a.state_province,
-a.county_parish,
-a.poldiv_matched,
-a.match_status
-FROM $tbl_raw a JOIN $tbl_region_codes b
+UPDATE $tbl_raw a JOIN $tbl_region_codes b
 ON a.tdwgCode=b.code
+SET a.country_verbatim=b.country
 ;
-DROP TABLE $tbl_raw;
-RENAME TABLE $tbl_raw_temp TO $tbl_raw;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Updating FK poldiv_full in `$tbl_raw`...";
+echo "    Joining on area_name...";
+$sql="
+UPDATE $tbl_raw a JOIN $tbl_region_codes b
+ON a.area_name=b.region
+SET a.country_verbatim=b.country
+WHERE b.country IS NULL
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Updating FK poldiv_full\r\n";
+echo "      Table `$tbl_raw`...";
 $sql="
 UPDATE $tbl_raw 
 SET poldiv_full=CONCAT_WS('@',
@@ -123,7 +45,17 @@ IFNULL(county_parish_verbatim,'')
 )
 WHERE country_verbatim IS NOT NULL
 ;
-UPDATE $tbl_raw 
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "      Table `$tbl_region_codes`...";
+// Not the placeholder at end for county_parish
+$sql="
+UPDATE $tbl_region_codes 
+SET poldiv_full=CONCAT_WS('@',country, state_province, '')
+;
+UPDATE $tbl_region_codes 
 SET poldiv_full=NULL
 WHERE TRIM(poldiv_full)=''
 ;
@@ -365,5 +297,6 @@ a.match_status=b.match_status
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
+
 
 ?>
