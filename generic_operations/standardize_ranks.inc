@@ -1,13 +1,13 @@
 <?php
 
-//////////////////////////////////////////////////////////////////
-// Detect rank of taxon
-// Needed for parsing name from authors
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+// Assume the rank column has already been somewhat standardized
+// on input to this limited set of options
+////////////////////////////////////////////////////////////
 
-echo "  Standardizing ranks...";
+echo "  Standardizing ranks..";
 $sql="
-UPDATE $tbl_raw_final
+UPDATE distribution 
 SET taxon_rank=
 CASE
 WHEN TRIM(taxon_rank)='Class ' THEN 'class'
@@ -28,5 +28,6 @@ END
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
+
 
 ?>

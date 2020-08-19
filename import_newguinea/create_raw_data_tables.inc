@@ -41,9 +41,7 @@ $sql="
 DROP TABLE IF EXISTS `$tbl_raw_final`;
 CREATE TABLE $tbl_raw_final (
 taxon VARCHAR(250) DEFAULT NULL,
-author VARCHAR(250) DEFAULT NULL,
-taxon_author VARCHAR(500) DEFAULT NULL, 
-poldiv_full VARCHAR(250) DEFAULT NULL, 
+taxon_rank VARCHAR(250) DEFAULT NULL,
 country VARCHAR(250) DEFAULT NULL,
 state_province VARCHAR(250) DEFAULT NULL,
 county_parish VARCHAR(250) DEFAULT NULL,

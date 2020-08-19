@@ -136,6 +136,7 @@ foreach ($src_array as $src) {
 echo "\r\n#############################################\r\n";
 echo "Completing general operations on core database:\r\n\r\n";	
 include_once "generic_operations/newfoundland_hack.inc";
+include_once "generic_operations/standardize_ranks.inc";
 include_once "generic_operations/country_sources.inc";
 include_once "generic_operations/taxon_country_sources.inc";
 include_once "generic_operations/endemic_taxon_sources.inc";

@@ -1,4 +1,4 @@
-<?php
+\<?php
 
 ////////////////////////////////////////////////////
 // Imports species distribution data
@@ -15,41 +15,26 @@ include "create_raw_data_tables.inc";
 // import text files to raw data tables
 include "import.inc";
 
-
-die("STOPPING...\n");
-
-
-
-
-// import text files to raw data tables
-include "alter_tables.inc";
+// Insert country- and state-level observations to new table
+include "load_raw_final.inc";
 
 echo "Standardizing " . $src . "_raw:\r\n";
 
-// Remove rows not relevant to NSR
-include "delete_unnecessary_rows.inc";
+// separate taxon name from author and dump to taxon field
+include "infer_rank.inc";
 
 // separate taxon name from author and dump to taxon field
 include "standardize_rank.inc";
 
-// standardize native status codes
-include "standardize_status.inc";
-
-// Scrub regions with GNRS API
-include "scrub_regions.inc";
-
-// Mark duplicate taxon+poldiv combos for removal
-include "mark_duplicates.inc";
-
-// Extract empirical list of countries and assign to 
-// variable cclist_countries
-include "prepare_cclist_countries.inc";
+// import text files to raw data tables
+include "index_tables.inc";
 
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
 
 // load metadata on regions covered by this source
+include "prepare_cclist_states.inc";
 include "create_poldiv_source_staging.inc";
 include "load_poldiv_source_staging.inc"; 
 

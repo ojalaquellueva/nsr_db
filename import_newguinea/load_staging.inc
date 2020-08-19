@@ -13,7 +13,6 @@ source_name,
 country,
 state_province,
 county_parish,
-poldiv_full,
 taxon,
 taxon_rank,
 native_status,
@@ -24,14 +23,11 @@ SELECT
 country,
 state_province,
 county_parish,
-poldiv_full,
-name,
-rank,
-establishment,
+taxon,
+taxon_rank,
+native_status,
 NULL
-FROM $tbl_raw
-WHERE is_dupe=0
-AND country IS NOT NULL
+FROM $tbl_raw_final
 ;
 ";
 sql_execute_multiple($dbh, $sql);

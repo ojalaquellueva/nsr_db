@@ -79,6 +79,11 @@ $focal_regions="Island of New Guinea and neighbouring non-oceanic islands";
 // checklists. Spellings MUST agree with spellings in table country.
 // Leave empty if none. Enter names in single quotes separated by
 // commas: "'countryA','countryB','countryC'" 
+// Do NOT include Indonesia for this source, only Papua New Guinea should
+// be considered comprehensive for the entire country
+// Also not that comprehensive list states are prepared empirically by 
+// extracting all country+state combinations from database. See script
+// prepare cclist_states.inc for details.
 $cclist_countries="
 'Papua New Guinea'
 ";
@@ -97,8 +102,8 @@ $drop_raw=false;
 // See README in data directory for details
 //////////////////////////////////////////////////
 // Name of main file you will be importing
-$file_raw = "newGuinea_checklist.csvt";
-$file_raw = "newGuinea_checklist_sample.csv";	// For testing
+$file_raw = "newGuinea_checklist.csv";
+//$file_raw = "newGuinea_checklist_sample.csv";	// For testing
 
 // names of destination mysql table
 $tbl_raw=$src."_raw";

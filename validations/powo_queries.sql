@@ -7,8 +7,6 @@
 -- -----------------------------------------------------------------
 
 SET @powo_src_id:=6;
-SET @vascan_src_id:=2;
-SET @mexico_src_id:=5;
 
 -- -----------------------------------------------------------------
 -- Prepare table
@@ -33,6 +31,9 @@ ADD INDEX (taxon_with_author)
 --
 -- Canada
 --
+
+SET @powo_src_id:=6;
+SET @vascan_src_id:=2;
 
 -- powo_raw vs table distribution
 SELECT Canada_species_powo, Canada_species_vascan
@@ -98,9 +99,12 @@ AND country='Canada' AND state_province='Alberta'
 ) b
 ;
 
-
+--
 -- Mexico
 --
+
+SET @powo_src_id:=6;
+SET @mexico_src_id:=5;
 
 -- Table distribution only
 SELECT Mexico_species_powo, Mexico_species_mexico
@@ -121,6 +125,58 @@ AND source_id=@mexico_src_id
 AND country='Mexico'
 ) b
 ;
+
+--
+-- USA
+--
+
+SET @powo_src_id:=6;
+SET @usda_src_id:=7;
+
+SELECT USA_species_powo, USA_species_usda
+FROM (
+SELECT COUNT(DISTINCT taxon) AS USA_species_powo
+FROM distribution
+WHERE taxon_rank='species'
+AND native_status='native'
+AND source_id=@powo_src_id
+AND country='United States'
+) a, 
+(
+SELECT COUNT(DISTINCT taxon) AS USA_species_usda
+FROM distribution
+WHERE taxon_rank='species'
+AND native_status='native'
+AND source_id=@usda_src_id
+AND country='United States'
+) b
+;
+
+--
+-- Arizona
+--
+
+SELECT AZ_species_powo, AZ_species_usda
+FROM (
+SELECT COUNT(DISTINCT taxon) AS AZ_species_powo
+FROM distribution
+WHERE taxon_rank='species'
+AND native_status='native'
+AND source_id=@powo_src_id
+AND country='United States'
+AND state_province='Arizona'
+) a, 
+(
+SELECT COUNT(DISTINCT taxon) AS AZ_species_usda
+FROM distribution
+WHERE taxon_rank='species'
+AND native_status='native'
+AND source_id=@usda_src_id
+AND country='United States'
+AND state_province='Arizona'
+) b
+;
+
 
 -- -----------------------------------------------------------
 -- Examine status of specific species x regions

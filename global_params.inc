@@ -52,9 +52,6 @@ $src_array=array(
 $src_array=array(
 	"newguinea"
 );
-$src_array=array(
-	"powo"
-);
 
 //////////////////////////////////////////////////
 // Users & access levels
