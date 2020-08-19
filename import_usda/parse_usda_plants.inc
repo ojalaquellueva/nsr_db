@@ -850,7 +850,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 							";
 							
 							// Only add if no existing record
-							if (sql_returns_records($sql_existing_record)==false) {
+							if (sql_returns_records($dbh, $sql_existing_record)==false) {
 								// Compose remainder of SQL		
 								$sql_select="
 								VALUES (
@@ -888,7 +888,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 							";
 							
 							// Only add if no existing record
-							if (sql_returns_records($sql_existing_record)==false) {
+							if (sql_returns_records($dbh, $sql_existing_record)==false) {
 								// Compose remainder of SQL		
 								$sql_select="
 								VALUES (

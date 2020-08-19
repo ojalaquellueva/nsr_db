@@ -11,52 +11,122 @@ $echo_reponse=false;
 
 echo "Scrubbing regions:\r\n";
 
-echo "  Populating verbatim political divisions in `$tbl_raw`:\r\n";
-
-echo "    Joining on TDWG codes...";
+echo "  Populating verbatim political divisions in `$tbl_raw`...";
+// Must create new table to allow inserting multiple records in place of one
+// All fields included except autoincrement primary key, which is generated
+// anew
+$tbl_raw_temp = $tbl_raw . "_temp";
 $sql="
-UPDATE $tbl_raw a JOIN $tbl_region_codes b
+DROP TABLE IF EXISTS $tbl_raw_temp;
+CREATE TABLE $tbl_raw_temp LIKE $tbl_raw;
+INSERT INTO $tbl_raw_temp (
+fqId,
+query,
+modified,
+bibliographicCitation,
+genus,
+taxonomicStatus,
+kingdom,
+phylum,
+family,
+source,
+namePublishedInYear,
+name,
+authors,
+species,
+rank,
+reference,
+accepted_fqId,
+accepted_name,
+accepted_author,
+accepted_rank,
+accepted_taxonomicStatus,
+establishment,
+featureId,
+tdwgCode,
+tdwgLevel,
+area_name,
+infraspecies,
+occurrenceStatus,
+threatStatus,
+poldiv_full_verbatim,
+country_verbatim,
+state_province_verbatim,
+county_parish_verbatim,
+poldiv_full,
+country_id,
+state_province_id,
+county_parish_id,
+country,
+state_province,
+county_parish,
+poldiv_matched,
+match_status
+)
+SELECT 
+a.fqId,
+a.query,
+a.modified,
+a.bibliographicCitation,
+a.genus,
+a.taxonomicStatus,
+a.kingdom,
+a.phylum,
+a.family,
+a.source,
+a.namePublishedInYear,
+a.name,
+a.authors,
+a.species,
+a.rank,
+a.reference,
+a.accepted_fqId,
+a.accepted_name,
+a.accepted_author,
+a.accepted_rank,
+a.accepted_taxonomicStatus,
+a.establishment,
+a.featureId,
+a.tdwgCode,
+a.tdwgLevel,
+a.area_name,
+a.infraspecies,
+a.occurrenceStatus,
+a.threatStatus,
+a.poldiv_full_verbatim,
+b.country,
+b.state_province,
+a.county_parish_verbatim,
+a.poldiv_full,
+a.country_id,
+a.state_province_id,
+a.county_parish_id,
+a.country,
+a.state_province,
+a.county_parish,
+a.poldiv_matched,
+a.match_status
+FROM $tbl_raw a JOIN $tbl_region_codes b
 ON a.tdwgCode=b.code
-SET a.country_verbatim=b.country
 ;
+DROP TABLE $tbl_raw;
+RENAME TABLE $tbl_raw_temp TO $tbl_raw;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Joining on area_name...";
-$sql="
-UPDATE $tbl_raw a JOIN $tbl_region_codes b
-ON a.area_name=b.region
-SET a.country_verbatim=b.country
-WHERE b.country IS NULL
-;
-";
-sql_execute_multiple($dbh, $sql);
-echo $done;
-
-echo "    Updating FK poldiv_full\r\n";
-echo "      Table `$tbl_raw`...";
+echo "    Updating FK poldiv_full_verbatim in `$tbl_raw`...";
 $sql="
 UPDATE $tbl_raw 
-SET poldiv_full=CONCAT_WS('@',
+SET poldiv_full_verbatim=CONCAT_WS('@',
 country_verbatim,
 IFNULL(state_province_verbatim,''),
 IFNULL(county_parish_verbatim,'')
 )
 WHERE country_verbatim IS NOT NULL
 ;
-";
-sql_execute_multiple($dbh, $sql);
-echo $done;
-
-echo "      Table `$tbl_region_codes`...";
-// Not the placeholder at end for county_parish
-$sql="
-UPDATE $tbl_region_codes 
-SET poldiv_full=CONCAT_WS('@',country, state_province, '')
-;
-UPDATE $tbl_region_codes 
-SET poldiv_full=NULL
+UPDATE $tbl_raw 
+SET poldiv_full_verbatim=NULL
 WHERE TRIM(poldiv_full)=''
 ;
 ";
@@ -164,7 +234,8 @@ $response =  json_decode($response_json);
 // var_dump($response);
 
 if ($echo_reponse) {
-	// Display sample of GNRS results
+	// Echo sample of GNRS results to terminal
+	// For development only; turn off for production
 	
 	// Set format
 	$mask = "%-12s %-25s %-15s %-25s %-25s %-20s %-15s \n";
@@ -222,10 +293,10 @@ foreach ($response as $idx => $obs) {
 	$sql="
 	INSERT INTO $tbl_poldivs_scrubbed (
 		gnrs_id,
+		poldiv_full_verbatim,
 		country_verbatim,
 		state_province_verbatim,
 		county_parish_verbatim,
-		poldiv_full,
 		country,
 		state_province,
 		county_parish,
@@ -249,10 +320,10 @@ foreach ($response as $idx => $obs) {
 	)
 	VALUES (
 		'$gnrs_id',
+		'$poldiv_full_verbatim',
 		'$country_verbatim',
 		'$state_province_verbatim',
 		'$county_parish_verbatim',
-		'$poldiv_full',
 		'$country',
 		'$state_province',
 		'$county_parish',
@@ -280,11 +351,27 @@ foreach ($response as $idx => $obs) {
 }
 echo $done;
 
+echo "Updating column `poldiv_full` in table `$tbl_poldivs_scrubbed`...";
+$sql="
+UPDATE $tbl_poldivs_scrubbed 
+SET poldiv_full=
+CONCAT_WS('@',
+IFNULL(country,''),
+IFNULL(state_province,''),
+IFNULL(county_parish,'')
+)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+
 echo "Transferring GNRS results to `$tbl_raw`...";
 $sql="
 UPDATE $tbl_raw a JOIN $tbl_poldivs_scrubbed b
-ON a.poldiv_full=b.poldiv_full
+ON a.poldiv_full_verbatim=b.poldiv_full_verbatim
 SET 
+a.poldiv_full=b.poldiv_full,
 a.country=b.country,
 a.state_province=b.state_province,
 a.county_parish=b.county_parish,
@@ -297,6 +384,5 @@ a.match_status=b.match_status
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
-
 
 ?>

@@ -50,6 +50,9 @@ $src_array=array(
 	"vascan"
 );
 $src_array=array(
+	"newguinea"
+);
+$src_array=array(
 	"powo"
 );
 

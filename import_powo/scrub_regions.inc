@@ -49,10 +49,11 @@ area_name,
 infraspecies,
 occurrenceStatus,
 threatStatus,
-poldiv_full,
+poldiv_full_verbatim,
 country_verbatim,
 state_province_verbatim,
 county_parish_verbatim,
+poldiv_full,
 country_id,
 state_province_id,
 county_parish_id,
@@ -92,10 +93,11 @@ a.area_name,
 a.infraspecies,
 a.occurrenceStatus,
 a.threatStatus,
-a.poldiv_full,
+a.poldiv_full_verbatim,
 b.country,
 b.state_province,
 a.county_parish_verbatim,
+a.poldiv_full,
 a.country_id,
 a.state_province_id,
 a.county_parish_id,
@@ -113,10 +115,10 @@ RENAME TABLE $tbl_raw_temp TO $tbl_raw;
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Updating FK poldiv_full in `$tbl_raw`...";
+echo "    Updating FK poldiv_full_verbatim in `$tbl_raw`...";
 $sql="
 UPDATE $tbl_raw 
-SET poldiv_full=CONCAT_WS('@',
+SET poldiv_full_verbatim=CONCAT_WS('@',
 country_verbatim,
 IFNULL(state_province_verbatim,''),
 IFNULL(county_parish_verbatim,'')
@@ -124,7 +126,7 @@ IFNULL(county_parish_verbatim,'')
 WHERE country_verbatim IS NOT NULL
 ;
 UPDATE $tbl_raw 
-SET poldiv_full=NULL
+SET poldiv_full_verbatim=NULL
 WHERE TRIM(poldiv_full)=''
 ;
 ";
@@ -232,7 +234,8 @@ $response =  json_decode($response_json);
 // var_dump($response);
 
 if ($echo_reponse) {
-	// Display sample of GNRS results
+	// Echo sample of GNRS results to terminal
+	// For development only; turn off for production
 	
 	// Set format
 	$mask = "%-12s %-25s %-15s %-25s %-25s %-20s %-15s \n";
@@ -290,10 +293,10 @@ foreach ($response as $idx => $obs) {
 	$sql="
 	INSERT INTO $tbl_poldivs_scrubbed (
 		gnrs_id,
+		poldiv_full_verbatim,
 		country_verbatim,
 		state_province_verbatim,
 		county_parish_verbatim,
-		poldiv_full,
 		country,
 		state_province,
 		county_parish,
@@ -317,10 +320,10 @@ foreach ($response as $idx => $obs) {
 	)
 	VALUES (
 		'$gnrs_id',
+		'$poldiv_full_verbatim',
 		'$country_verbatim',
 		'$state_province_verbatim',
 		'$county_parish_verbatim',
-		'$poldiv_full',
 		'$country',
 		'$state_province',
 		'$county_parish',
@@ -348,11 +351,27 @@ foreach ($response as $idx => $obs) {
 }
 echo $done;
 
+echo "Updating column `poldiv_full` in table `$tbl_poldivs_scrubbed`...";
+$sql="
+UPDATE $tbl_poldivs_scrubbed 
+SET poldiv_full=
+CONCAT_WS('@',
+IFNULL(country,''),
+IFNULL(state_province,''),
+IFNULL(county_parish,'')
+)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+
 echo "Transferring GNRS results to `$tbl_raw`...";
 $sql="
 UPDATE $tbl_raw a JOIN $tbl_poldivs_scrubbed b
-ON a.poldiv_full=b.poldiv_full
+ON a.poldiv_full_verbatim=b.poldiv_full_verbatim
 SET 
+a.poldiv_full=b.poldiv_full,
 a.country=b.country,
 a.state_province=b.state_province,
 a.county_parish=b.county_parish,

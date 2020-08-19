@@ -1,8 +1,8 @@
 <?php
 
 /////////////////////////////////////////////////////////
-// Standardize area_names (mostly but not always countries)
-// and combine any duplicate records
+// Mark duplicate taxon + political division combinations
+// for removal
 /////////////////////////////////////////////////////////
 
 echo "Marking duplicate records:\r\n";
@@ -10,7 +10,8 @@ echo "Marking duplicate records:\r\n";
 echo "  Creating indexes...";
 $sql="
 ALTER TABLE $tbl_raw
-ADD INDEX (country)
+ADD INDEX (country),
+ADD INDEX (poldiv_full)
 ; 
 ";
 sql_execute_multiple($dbh, $sql);
@@ -50,17 +51,17 @@ $sql="
 UPDATE $tbl_raw r JOIN
 (
 SELECT 
-country,
+poldiv_full,
 name, 
 (
 SELECT id
 FROM $tbl_raw r
-WHERE $tbl_raw.name=r.name AND $tbl_raw.country=r.country
+WHERE $tbl_raw.name=r.name AND $tbl_raw.poldiv_full=r.poldiv_full
 ORDER BY id
 LIMIT 1
 ) AS first_id
 FROM $tbl_raw
-GROUP BY country, name
+GROUP BY poldiv_full, name
 ) AS nodupes
 ON r.id=nodupes.first_id
 SET is_dupe=0

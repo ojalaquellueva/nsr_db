@@ -86,6 +86,7 @@ $sql="
 DROP TABLE IF EXISTS $tbl_poldivs_scrubbed;
 CREATE TABLE $tbl_poldivs_scrubbed (
 gnrs_id INT(11) UNSIGNED NOT NULL, 
+poldiv_full_verbatim VARCHAR(750) DEFAULT NULL,
 country_verbatim VARCHAR(250) DEFAULT NULL,
 state_province_verbatim VARCHAR(250) DEFAULT NULL,
 county_parish_verbatim VARCHAR(250) DEFAULT NULL,

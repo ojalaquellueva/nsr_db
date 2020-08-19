@@ -139,6 +139,7 @@ include_once "generic_operations/newfoundland_hack.inc";
 include_once "generic_operations/country_sources.inc";
 include_once "generic_operations/taxon_country_sources.inc";
 include_once "generic_operations/endemic_taxon_sources.inc";
+include_once "generic_operations/optimize.inc";
 include_once "generic_operations/set_permissions.inc";
 
 // Remove any remaining temporary tables, as requested in params

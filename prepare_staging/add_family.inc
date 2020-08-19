@@ -29,6 +29,7 @@ CREATE TABLE temp_missing_family
 SELECT DISTINCT country, state_province, county_parish, family
 FROM distribution_staging
 WHERE native_status<>'introduced' AND taxon_rank<>'hybrid'
+AND family IS NOT NULL AND TRIM(family)<>''
 ;
 ALTER TABLE temp_missing_family
 ADD COLUMN del VARCHAR(50) DEFAULT NULL

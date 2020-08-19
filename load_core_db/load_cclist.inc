@@ -49,16 +49,6 @@ AND a.checklist_type='comprehensive'
 sql_execute_multiple($dbh, $sql);
 */	
 
-$sql="
-DROP TABLE IF EXISTS cclist_temp;
-CREATE TABLE cclist_temp LIKE cclist;
-INSERT INTO cclist_temp SELECT DISTINCT * FROM cclist;
-DROP TABLE cclist;
-RENAME TABLE cclist_temp TO cclist;
-";
-sql_execute_multiple($dbh, $sql);	
-//echo $done;
-
 // Setting empty strings to null for state and county
 // Essential for absence flagging to work
 $sql="
@@ -73,6 +63,16 @@ WHERE trim(county_parish)=''
 ";
 sql_execute_multiple($dbh, $sql);	
 echo $done;
+
+$sql="
+DROP TABLE IF EXISTS cclist_temp;
+CREATE TABLE cclist_temp LIKE cclist;
+INSERT INTO cclist_temp SELECT DISTINCT * FROM cclist;
+DROP TABLE cclist;
+RENAME TABLE cclist_temp TO cclist;
+";
+sql_execute_multiple($dbh, $sql);	
+//echo $done;
 
 
 ?>

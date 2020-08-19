@@ -3,9 +3,8 @@
 /////////////////////////////////////////////////////
 // Optimizations:
 // 1. Creates columns state_province_full and 
-//    county_parish_full. Allow joings on singe column
-// 	  instead of 2-3  
-columns.
+//    county_parish_full. Allow joings on single column
+// 	  instead of 2-3  columns.
 /////////////////////////////////////////////////////
 
 echo "  Performing optimizations:\r\n";
