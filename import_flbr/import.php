@@ -38,6 +38,7 @@ include "create_distribution_staging.inc";
 include "load_staging.inc";
 
 // load metadata on regions covered by this source
+include "prepare_cclist_states.inc";
 include "create_poldiv_source_staging.inc";
 include "load_poldiv_source_staging.inc"; // NOT READY
 

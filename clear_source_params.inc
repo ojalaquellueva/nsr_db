@@ -15,11 +15,13 @@ $source_contact_email="";
 $date_accessed="";
 $focal_regions="";
 $cclist_countries="";
+$cclist_states="";
 $pclist_countries="";
 $is_comprehensive=0;
 $regional_scope="";
 $taxonomic_scope="";
 $file_raw = "";
-$datapath="";		
+$datapath="";	
+$tbl_cclist_states="";	
 
 ?>

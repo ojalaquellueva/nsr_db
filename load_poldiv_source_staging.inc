@@ -48,7 +48,7 @@ echo $done;
 
 // Load comprehesive checklist states, if applicablr
 if (isset($cclist_states_from_country)) {
-	echo "  Loading comprehensive state checklists...";
+	echo "  Loading comprehensive state checklists from list...";
 	
 	if ($cclist_states_from_country===true) {
 		// Extract comprehensive state checklists from country
@@ -73,27 +73,31 @@ if (isset($cclist_states_from_country)) {
 		sql_execute_multiple($dbh, $sql);
 		echo $done;
 	}
-} elseif (exists_table($dbh,$tbl_cclist_states)) {
-	echo "  Loading comprehensive state checklists...";
-	$sql="
-	INSERT INTO poldiv_source_staging (
-	poldiv_id, 
-	poldiv_type, 
-	source_name, 
-	checklist_type,
-	checklist_details
-	)
-	SELECT DISTINCT
-	state_province_id, 
-	'state_province', 
-	'$src', 
-	'comprehensive',
-	'$source_name_full'
-	FROM $tbl_cclist_states
-	;
-	";
-	sql_execute_multiple($dbh, $sql);
-	echo $done;
+} elseif ( !"$tbl_cclist_states"=="" ) {
+	$tbl_cclist_states_expected=$src."_cclist_states";
+
+	if ( exists_table($dbh,"$tbl_cclist_states_expected") ) {
+		echo "  Loading comprehensive state checklists from table `$tbl_cclist_states`...";
+		$sql="
+		INSERT INTO poldiv_source_staging (
+		poldiv_id, 
+		poldiv_type, 
+		source_name, 
+		checklist_type,
+		checklist_details
+		)
+		SELECT DISTINCT
+		state_province_id, 
+		'state_province', 
+		'$src', 
+		'comprehensive',
+		'$source_name_full'
+		FROM $tbl_cclist_states
+		;
+		";
+		sql_execute_multiple($dbh, $sql);
+		echo $done;
+	}
 }
 
 ?>
