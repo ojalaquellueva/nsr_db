@@ -4,20 +4,26 @@
 // Distributions source parameters
 //////////////////////////////////////////////////
 
+// Note: $cclist_countries and $cclist_states not declared 
+// as parameters for this source. Both are set dynamically by 
+// querying the raw data. See scripts prepare_cclist_countries.inc
+// and prepare_cclist_states.inc for details.
+
 // Name which uniquely identifies this source within database
 // Many operations, including table names, depend on this parameter
 // REQUIRED
 // MUST BE UNIQUE
-// NO SPACES
-// MAX 50 characters
+// MUST BE SAME AS NAME OF THIS DIRECTORY, MINUS PREFIX "import_"
+// MUST BE SAME AS NAME OF DATA DIRECTORY FOR THIS SOURCE
+// PLAIN ASCII LETTERS AND UNDERSCORES ONLY, NO SPACES
+// MAX 50 CHARACTERS
 $source_name="powo";
 
 // Comprehensiveness of this source. Two options:
-// 1
-//		=comprehensive. Includes all species from focal region in focal taxon. Absence from 
-//		list may indicates non-native species
-// 0
-//		=selective, not comprehensive. Not all taxa in region(s) include, absence not interpretable
+// 1: comprehensive. Includes all species from focal region in focal taxon. 
+// 	Absence from list may indicates non-native species
+// 0: partial, not comprehensive. Not all taxa in region(s) included. 
+// 	Absence not used to infer native_status.
 $is_comprehensive=1;
 
 // Regional scope (political division level) of this source. 
@@ -26,6 +32,10 @@ $is_comprehensive=1;
 // for a comprehensive checklist at the county level, species not on the list
 // can be treated as non-native at the county level. However, at the state 
 // and country level, only presences can be interpreted. 
+//
+// Note: Generally not used for this source. Comprehensive checklist 
+// political divisions are set by lists of countries and states 
+// extracted directly from raw data. But KEEP to avoid breaking anything.
 // Three options:
 //		country
 //		state_province
