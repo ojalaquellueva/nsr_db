@@ -32,6 +32,7 @@
 //////////////////////////////////////////////////
 
 $src_array=array(
+	"powo",
 	"flbr",
 	"conosur",
 	"enquist",
@@ -42,16 +43,30 @@ $src_array=array(
 	"tropicos",
 	"usda",
 	"vascan",
-	"weakley"
-);
-
-$src_array=array(
-	"enquist",
-	"vascan"
-);
-$src_array=array(
+	"weakley",
 	"newguinea"
 );
+$src_array=array(
+	"flbr",
+	"conosur",
+	"fwi",
+	"mab",
+	"tropicos",
+	"newguinea"
+);
+
+//////////////////////////////////////////////////
+// NSR metadata
+//////////////////////////////////////////////////
+
+// Database version
+// Required! Added to table meta, along with today's date
+$DB_VERSION="2.0";
+
+// Code version
+// Use tag # for commit associated with this DB version
+// Added to table meta, along with today's date
+$CODE_VERSION="2.0";
 
 //////////////////////////////////////////////////
 // Users & access levels
