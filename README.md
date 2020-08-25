@@ -42,23 +42,24 @@ REVOKE ALL PRIVILEGES ON nsr.* FROM admin@localhost;
 
 
 --
--- nsr_read (select only)
+-- nsr_read (read only)
 --
 GRANT SELECT ON nsr.* TO 'nsr_read'@'localhost';
 
 --
--- nsr_write (needs write/execute)
+-- nsr_write (write/execute)
 -- 
-GRANT SELECT, INSERT, UPDATE, DELETE 
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE ROUTINE  
 ON nsr.* TO 'nsr_write'@'localhost';
 GRANT DROP ON TABLE nsr.* TO 'nsr_write'@'localhost';
 GRANT CREATE ON TABLE nsr.* TO 'nsr_write'@'localhost';
 GRANT EXECUTE ON nsr_write.* TO 'nsr'@'localhost';
 
 --
--- nsr (needs write/execute)
+-- nsr (write/execute, additional privileges)
 -- 
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER 
+-- 
+GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, CREATE ROUTINE 
 ON nsr.* TO 'nsr'@'localhost';
 GRANT DROP ON TABLE nsr.* TO 'nsr'@'localhost';
 GRANT CREATE ON TABLE nsr.* TO 'nsr'@'localhost';

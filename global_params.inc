@@ -47,11 +47,6 @@ $src_array=array(
 	"newguinea"
 );
 $src_array=array(
-	"flbr",
-	"conosur",
-	"fwi",
-	"mab",
-	"tropicos",
 	"newguinea"
 );
 

@@ -11,10 +11,12 @@ echo "  Detecting taxon ranks...";
 // Dump third token of name to taxon_rank column
 $sql="
 ALTER TABLE tropicos_raw
-ADD COLUMN rank_temp VARCHAR(25) DEFAULT NULL,
-ADD INDEX (rank_temp);
+ADD COLUMN rank_temp VARCHAR(100) DEFAULT NULL,
+ADD INDEX (rank_temp)
+;
 UPDATE tropicos_raw
 SET rank_temp=strSplit(taxon_with_author,' ',3)
+;
 ";
 sql_execute_multiple($dbh, $sql);
 //echo $done;

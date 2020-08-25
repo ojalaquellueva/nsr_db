@@ -58,8 +58,8 @@ FROM fwi_occurrences a JOIN fwi_region_country b
 ON a.region=b.region
 WHERE b.region IN ('bahamas','caymanIsland','cuba','hispaniola','jamaica','puertoRico','virginIslands')
 ) AS a
-GROUP BY region, country, family, taxon
-ORDER BY region, country, family, taxon
+GROUP BY region, country, family, genus, species, taxon, taxon_rank
+ORDER BY region, country, family, genus, species, taxon, taxon_rank
 ;
 ";
 sql_execute_multiple($dbh, $sql);
@@ -102,8 +102,8 @@ cult_status
 FROM fwi_occurrences 
 WHERE region IN ('greaterAntilles','lesserAntillles','westIndies')
 ) AS a
-GROUP BY region, family, taxon
-ORDER BY region, family, taxon
+GROUP BY region, family, genus, species, taxon, taxon_rank
+ORDER BY region, family, genus, species, taxon, taxon_rank
 ;
 ";
 sql_execute_multiple($dbh, $sql);
