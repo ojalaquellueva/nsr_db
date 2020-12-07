@@ -8,6 +8,7 @@ id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 db_version VARCHAR(50) DEFAULT NULL,
 code_version VARCHAR(50) DEFAULT NULL,
 build_date timestamp,
+api_core_version_compatible VARCHAR(50) DEFAULT NULL,
 PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ;
