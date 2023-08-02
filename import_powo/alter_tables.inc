@@ -31,11 +31,13 @@ echo "Indexing table `$tbl_raw`...";
 $sql="
 ALTER TABLE $tbl_raw 
 ADD INDEX (name),
-ADD INDEX (rank),
+ADD INDEX (`rank`),
 ADD INDEX (establishment),
 ADD INDEX (taxonomicStatus),
 ADD INDEX (area_name),
-ADD INDEX (match_status)
+ADD INDEX (match_status),
+ADD INDEX (tdwgCode),
+ADD INDEX (poldiv_full_verbatim)
 ;
 ";
 sql_execute_multiple($dbh, $sql);

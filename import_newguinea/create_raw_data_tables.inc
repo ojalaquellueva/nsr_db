@@ -30,7 +30,7 @@ notes VARCHAR(250) DEFAULT NULL,
 notes2 VARCHAR(250) DEFAULT NULL,
 woody VARCHAR(250) DEFAULT NULL,
 basionym_year VARCHAR(250) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
@@ -46,7 +46,7 @@ country VARCHAR(250) DEFAULT NULL,
 state_province VARCHAR(250) DEFAULT NULL,
 county_parish VARCHAR(250) DEFAULT NULL,
 native_status VARCHAR(250) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

@@ -25,6 +25,14 @@ UPDATE $tbl_raw_enquist_ow_endemics
 SET region='Australia'
 WHERE region='Austrailia'
 ;
+-- Extra whitespace in taxon
+UPDATE $tbl_raw_enquist_ow_endemics
+SET taxon=TRIM(taxon)
+;
+-- Extra whitespace in region
+UPDATE $tbl_raw_enquist_ow_endemics
+SET region=TRIM(region)
+;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

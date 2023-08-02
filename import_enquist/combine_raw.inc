@@ -15,7 +15,7 @@ country,
 native_status
 )
 SELECT DISTINCT
-taxon,
+TRIM(taxon),
 country,
 'endemic'
 FROM $tbl_raw_enquist_ow_endemics
@@ -52,6 +52,15 @@ FROM countryName
 WHERE isNewWorld=1
 ) AS b
 ;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+// Fix blank taxon rows
+// Not sure how these creep in
+$sql="
+DELETE FROM $tbl_raw
+WHERE taxon IS NULL
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

@@ -35,7 +35,7 @@ SELECT
 country,
 state_province,
 name,
-rank,
+`rank`,
 establishment,
 NULL
 FROM powo_raw

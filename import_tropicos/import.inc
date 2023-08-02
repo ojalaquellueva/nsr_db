@@ -1,9 +1,15 @@
 <?php
 // Imports raw text file to mysql
-// $local, $fields_terminated_by, $optionally_enclosed_by, $lines_terminated_by and $ignore_lines
-// are set in parameters file
+// $local, $fields_terminated_by, $optionally_enclosed_by, $lines_terminated_by
+// and $ignore_lines are set in parameters file
 
 echo "Loading raw data:\r\n";
+
+/* NOTE
+Did not attempt to implement $ROW_LIMIT for this source. Too complex, given
+the links between tables
+Need to separate tropicos into three sources, one per country!!
+*/
 
 foreach($tbl_list as $tbl) {	
 	$tbl_raw = $tbl."_raw";

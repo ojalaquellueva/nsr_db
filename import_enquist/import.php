@@ -22,7 +22,7 @@ include "source_specific_fixes.inc";
 // combine raw data tables to single table
 include "combine_raw.inc";
 
-echo "Standardizing $tbl_raw:\r\n";
+echo "Standardizing symbols and vocabulary:\r\n";
 
 // standardize hybrid x to plain ascii
 include "fix_hybrid_x.inc";

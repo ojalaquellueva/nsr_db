@@ -7,6 +7,17 @@
 // Parameters specific to this source
 include "params.inc";	
 
+/* 
+// For development only
+echo "WARNING: sections of import_powo/import.php commented out!\n";
+echo "Correct before production run!!!\n\n";
+$tbl_region_codes=$src."_region_codes";
+$tbl_poldivs = $src . "_poldivs";
+$tbl_poldivs_scrubbed = $src . "_poldivs_gnrs";
+//  END For development only
+ */
+
+
 ////////////// Import raw data file //////////////////////
 
 // create empty import table
@@ -38,7 +49,7 @@ include "mark_duplicates.inc";
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
-*/
+
 // load metadata on regions covered by this source
 include "prepare_cclist_countries.inc";
 include "prepare_cclist_states.inc";

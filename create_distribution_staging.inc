@@ -15,6 +15,7 @@ source_name VARCHAR(50) NOT NULL,
 country VARCHAR(50) NOT NULL,
 state_province VARCHAR(100) DEFAULT NULL,
 county_parish VARCHAR(100) DEFAULT NULL,
+poldiv_full VARCHAR(300) DEFAULT NULL,
 family VARCHAR(50) DEFAULT NULL,
 genus VARCHAR(50) DEFAULT NULL,
 species VARCHAR(150) DEFAULT NULL,
@@ -28,6 +29,7 @@ INDEX (source_name),
 INDEX (country),
 INDEX (state_province),
 INDEX (county_parish),
+INDEX (poldiv_full),
 INDEX (family),
 INDEX (genus),
 INDEX (species),
@@ -36,6 +38,6 @@ INDEX (taxon_rank),
 INDEX (native_status),
 INDEX (native_status_details),
 INDEX (cult_status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);

@@ -18,6 +18,21 @@
 //////////////////////////////////////////////////
 
 //////////////////////////////////////////////////
+// Replace database? (true/false)
+//
+// IMPORTANT! Set to true to replace database entirely
+// all tables will be dropped and replaced with new,
+// empty tables. Application will automatically prompt
+// for confirmation if this option is set to true.
+//
+// Set to false keep existing database and
+// add (if new) or replace (if already present) only
+// the source(s) listed in $src_array.
+//
+//////////////////////////////////////////////////
+$REPLACE_DB = FALSE;
+
+//////////////////////////////////////////////////
 // Distribution sources
 //
 // CRITICAL!!!
@@ -32,23 +47,40 @@
 //////////////////////////////////////////////////
 
 $src_array=array(
+	"enquist",
+	"weakley",
+	"mab",
+	"ipane",
 	"powo",
 	"flbr",
 	"conosur",
-	"enquist",
 	"fwi",
-	"ipane",
-	"mab",
 	"mexico",
 	"tropicos",
 	"usda",
 	"vascan",
-	"weakley",
+	"newguinea"
+);
+/* 
+$src_array=array(
+	"powo",
+	"enquist",
 	"newguinea"
 );
 $src_array=array(
-	"newguinea"
+	"enquist"
 );
+ */
+
+//////////////////////////////////////////////////
+// Limit rows loaded per source?
+// For testing/development using subsample of data
+// Set to empty string for production (imports all)
+//////////////////////////////////////////////////
+
+# Integer # of rows to import, "" imports all
+$ROW_LIMIT="";
+$ROW_LIMIT=300;
 
 //////////////////////////////////////////////////
 // NSR metadata
@@ -56,12 +88,12 @@ $src_array=array(
 
 // Database version
 // Required! Added to table meta, along with today's date
-$DB_VERSION="2.0";
+$DB_VERSION="3.0";
 
 // Code version
 // Use tag # for commit associated with this DB version
 // Added to table meta, along with today's date
-$CODE_VERSION="2.0";
+$CODE_VERSION="3.0";
 
 //////////////////////////////////////////////////
 // Users & access levels
@@ -91,23 +123,25 @@ $usr_array=array(
 
 // Base directory
 // All other paths set relative to this one
-// Should be one above this directory (application code repo)
-$base_dir = "/home/boyle/nsr/";
+$base_dir = "/home/boyle/bien/";
 
-// Application code directory (git repo)
-$app_dir = $base_dir . "nsr_db/";
+// Base directory for all code related to this application
+$app_base_dir = $base_dir . "nsr/";
+
+// Application code directory (this one; git repo)
+$app_dir = $app_base_dir . "db/";
 
 // Data directory
 // Keep outside repo
-$data_dir = $base_dir . "data/db/";
+$data_dir = $app_base_dir . "data/db/";
 
 // DB config file (DB name, users, passwords
 // Keep outside repo
-$config_dir = $base_dir . "config/";
+$config_dir = $app_base_dir . "config/";
 
 // Path to general php functions and other generic include files
 // Subdirectory "includes/" is a git submodule
-$global_utilities_path = $app_dir."php_includes/php/";
+$global_utilities_path = $base_dir . "includes/php/";
 
 // Path to local functions not in submodule "includes"
 // Recommend move to submodule once functions have 
@@ -133,24 +167,10 @@ $timer_off=$global_utilities_path."timer_off.inc";
 include $local_utilities_path."functions_local.inc.php";
 
 //////////////////////////////////////////////////
-// Replace database? (true/false)
-//
-// IMPORTANT! Set to true to replace database entirely
-// all tables will be dropped and replaced with new,
-// empty tables. Application will automatically prompt
-// for confirmation if this option is set to true.
-//
-// Set to false keep existing database and
-// add (if new) or replace (if already present) only
-// the source(s) listed in $src_array.
-//
-//////////////////////////////////////////////////
-$replace_db = false;
-
-//////////////////////////////////////////////////
 // Drop raw data tables after import complete?
 // (true/false)
 //////////////////////////////////////////////////
+
 $drop_raw=false;
 $drop_raw_force=false;		// over-rides any source-specific settings
 $drop_staging_force=false;		// over-rides any source-specific settings

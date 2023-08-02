@@ -10,7 +10,7 @@ code_version VARCHAR(50) DEFAULT NULL,
 build_date timestamp,
 api_core_version_compatible VARCHAR(50) DEFAULT NULL,
 PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 
 DROP TABLE IF EXISTS source;
@@ -27,7 +27,7 @@ is_comprehensive INT(1) DEFAULT NULL,
 regional_scope VARCHAR(50) DEFAULT 'country',
 taxonomic_scope VARCHAR(250) DEFAULT NULL,
 PRIMARY KEY (source_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS distribution;
 CREATE TABLE distribution (
@@ -48,7 +48,7 @@ cult_status VARCHAR(50) DEFAULT NULL,
 is_cultivated_taxon INT(1) DEFAULT 0, 
 PRIMARY KEY(distribution_id),
 FOREIGN KEY (source_id) REFERENCES source(source_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS cclist;
 CREATE TABLE cclist (
@@ -58,7 +58,7 @@ county_parish VARCHAR(100) DEFAULT '',
 INDEX (country),
 INDEX (state_province),
 INDEX (county_parish)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS country;
 CREATE TABLE country (
@@ -72,7 +72,7 @@ INDEX (country),
 INDEX (country_iso),
 INDEX (country_iso_alpha3),
 INDEX (country_fips)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- poldiv type is also the name of the table
 -- to which FK poldiv_id points
@@ -82,16 +82,22 @@ poldiv_source_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 poldiv_id INT(11) UNSIGNED NOT NULL, 
 poldiv_name VARCHAR(100) DEFAULT NULL,
 poldiv_type enum('country','state_province','county_parish') NOT NULL, 
+gid_0 VARCHAR(12) DEFAULT NULL,
+gid_1 VARCHAR(12) DEFAULT NULL,
+gid_2 VARCHAR(12) DEFAULT NULL,
 source_id INT(11) UNSIGNED NOT NULL, 
 checklist_type VARCHAR(50) DEFAULT NULL,
 checklist_details VARCHAR(250) DEFAULT NULL,
 PRIMARY KEY (poldiv_source_id),
 INDEX (poldiv_id),
+INDEX (gid_0),
+INDEX (gid_1),
+INDEX (gid_2),
 INDEX (poldiv_type),
 INDEX (poldiv_name),
 INDEX (source_id),
 INDEX (checklist_type)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS countryName;
@@ -110,7 +116,7 @@ INDEX (isoCode),
 INDEX (countryCode3Char),
 INDEX (countryNameStd),
 INDEX (isNewWorld)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS state_province;
 CREATE TABLE state_province (
@@ -127,7 +133,7 @@ INDEX (state_province),
 INDEX (state_province_ascii),
 INDEX (state_province_code),
 INDEX (state_province_code_unique)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS state_province_name;
 CREATE TABLE state_province_name (
@@ -144,7 +150,7 @@ INDEX (country),
 INDEX (state_province_id),
 INDEX (state_province),
 INDEX (state_province_ascii)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS cultspp;
 CREATE TABLE cultspp (
@@ -154,7 +160,7 @@ taxon VARCHAR(150) NOT NULL,
 PRIMARY KEY(cultspp_id),
 INDEX(taxon),
 FOREIGN KEY (source_id) REFERENCES source(source_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS cache;
 CREATE TABLE cache (
@@ -179,7 +185,7 @@ isIntroduced INT(1) DEFAULT NULL,
 isCultivatedNSR INT(1) DEFAULT 0,
 is_cultivated_taxon INT(1) DEFAULT 0, 
 PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 
 -- User-submitted observations plus NSR resolution results
@@ -221,7 +227,7 @@ genus VARCHAR(100) NOT NULL,
 family VARCHAR(100) NOT NULL,
 source VARCHAR(150) NOT NULL,
 PRIMARY KEY(gf_lookup_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 
 ";

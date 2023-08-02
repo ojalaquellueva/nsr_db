@@ -100,6 +100,7 @@ $datapath = $data_dir . $source_name."/";
 $tbl_dist_raw=$source_name."_dist_raw";
 $tbl_taxon_raw=$source_name."_taxon_raw";
 $tbl_raw=$source_name."_raw";
+$tbl_raw_bak=$tbl_raw;	// need this because tbl_raw has two uses
 
 // Names of important fields that can be passed as parameters
 $fld_scientific_name="taxon";

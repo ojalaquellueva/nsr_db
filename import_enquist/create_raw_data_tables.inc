@@ -12,7 +12,7 @@ region VARCHAR(100) DEFAULT NULL,
 taxon VARCHAR(250) DEFAULT NULL,
 INDEX (region),
 INDEX (taxon)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `$tbl_raw_enquist_cultspp`;
 CREATE TABLE `$tbl_raw_enquist_cultspp` (
 taxon VARCHAR(250) DEFAULT NULL,
 INDEX (taxon)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
@@ -47,7 +47,7 @@ INDEX (country),
 INDEX (stateProvince),
 INDEX (native_status),
 INDEX (native_status_details)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

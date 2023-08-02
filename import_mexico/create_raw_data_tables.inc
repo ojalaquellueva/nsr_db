@@ -44,7 +44,7 @@ state29 VARCHAR(255) DEFAULT NULL,
 state30 VARCHAR(255) DEFAULT NULL,
 state31 VARCHAR(255) DEFAULT NULL,
 state32 VARCHAR(255) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
@@ -57,7 +57,7 @@ species_id VARCHAR(255) DEFAULT NULL,
 family VARCHAR(255) DEFAULT NULL,
 bad VARCHAR(255) DEFAULT NULL,
 species VARCHAR(255) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

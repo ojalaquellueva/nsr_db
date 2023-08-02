@@ -5,9 +5,18 @@
 
 echo "Loading raw data:\r\n";
 
-echo "  Importing file $file_raw to table `$tbl_raw`...";
+$data_raw="$datapath$file_raw";
+if ( ! $ROW_LIMIT=="" ) {
+	$data_raw_sample = $datapath . "raw_data_sample";
+	$cmd="head -{$ROW_LIMIT} $datapath$file_raw > $data_raw_sample";	
+	exec($cmd, $output, $status);
+	if ($status) die("ERROR: command \'{$cmd}\' failed (" . basename(__FILE__) . ")\n");	
+	$data_raw=$data_raw_sample;
+}
+
+echo "  '$file_raw' --> `$tbl_raw`...";
 $sql = "
-LOAD DATA $local INFILE '$datapath$file_raw' 
+LOAD DATA $local INFILE '$data_raw' 
 INTO TABLE $tbl_raw 
 $fields_terminated_by 
 $optionally_enclosed_by 

@@ -21,6 +21,9 @@
 // Latest revision date: 
 //////////////////////////////////////////////////////////////////
 
+# Uncomment during development to turn on strict, verbose error-reporting
+error_reporting(E_ALL & ~E_NOTICE);
+
 include "global_params.inc";
 
 include_once $config_file;
@@ -32,30 +35,40 @@ foreach ($src_array as $src) {
 }
 $sources = substr_replace($sources, '', strlen($sources)-2,-1);
 
+# Set SQL LIMIT statement depending on value of global
+# parameter $ROW_LIMIT
+$sql_limit="";
+if ( ! $ROW_LIMIT=="" ) $sql_limit="LIMIT $ROW_LIMIT";
+
 ////////////////////////////////////////////////////////////
 // Run preliminary checks and confirm operations and options.
 // All checks are made at beginning to avoid interrupting
 // execution later on.
 ////////////////////////////////////////////////////////////
+$row_limit_disp=$ROW_LIMIT;
+if ( $ROW_LIMIT=="" ) $row_limit_disp="[none]";
+
 
 // Confirm basic options 
-$replace_db_display=$replace_db?'Yes':'No';
+$replace_db_display=$REPLACE_DB?'Yes':'No';
 $msg_proceed="
 Building Native Species Resolver (NSR) database with the following settings:\r\n
   Host: $HOSTNAME
   Database: $DB
-  Replace database: $replace_db_display\r\n
-  Sources: $sources\r\n
+  Replace database: $replace_db_display
+  Row limit: $row_limit_disp
+  Sources: $sources\n
+  WARNING: Table cultspp not loaded last time CHECK!!!
 Enter 'Yes' to proceed, or 'No' to cancel: ";
 $proceed=responseYesNoDie($msg_proceed);
 if ($proceed===false) die("\r\nOperation cancelled\r\n");
 
 if ( db_exists($DB, $USER, $PWD) ) {
 	// Confirm replacement of entire database if requested
-	if ($replace_db) {
+	if ($REPLACE_DB) {
 		$msg_conf_replace_db="\r\nPrevious database `$DB` will be deleted! Are you sure you want to proceed? (Y/N): ";
-		$replace_db=responseYesNoDie($msg_conf_replace_db);
-		if ($replace_db===false) die ("\r\nOperation cancelled\r\n");
+		$REPLACE_DB=responseYesNoDie($msg_conf_replace_db);
+		if ($REPLACE_DB===false) die ("\r\nOperation cancelled\r\n");
 	}
 }
 
@@ -72,7 +85,7 @@ $SQL_display = true;	// Displays final SQL statement
 // Generate new empty database
 ////////////////////////////////////////////////////////////
 
-if ($replace_db) {
+if ($REPLACE_DB) {
 	echo "\r\n#############################################\r\n";
 	echo "Creating new database:\r\n\r\n";	
 	include "mysql_connect.inc";	// Connect without specifying database
@@ -110,7 +123,7 @@ if ($replace_db) {
 // and install them if missing. This check is essential if database 
 // has been replaced
 include_once "check_functions.inc";
-/*
+
 ////////////////////////////////////////////////////////////
 // Load distribution data for each source
 ////////////////////////////////////////////////////////////
@@ -128,10 +141,18 @@ foreach ($src_array as $src) {
 	include "load_core_db/load_core_db.php";	
 	$src_no++;	
 }
-*/
+
 //////////////////////////////////////////////////////////////////
 // Complete any generic operations on core db
 //////////////////////////////////////////////////////////////////
+
+
+
+
+exit("STOPPIING...\n\n");
+
+
+
 
 echo "\r\n#############################################\r\n";
 echo "Completing general operations on core database:\r\n\r\n";	

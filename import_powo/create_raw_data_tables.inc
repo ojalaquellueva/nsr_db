@@ -23,7 +23,7 @@ namePublishedInYear VARCHAR(250) DEFAULT NULL,
 name VARCHAR(250) DEFAULT NULL,
 authors VARCHAR(250) DEFAULT NULL,
 species VARCHAR(250) DEFAULT NULL,
-rank VARCHAR(250) DEFAULT NULL,
+`rank` VARCHAR(250) DEFAULT NULL,
 reference VARCHAR(250) DEFAULT NULL,
 accepted_fqId VARCHAR(250) DEFAULT NULL,
 accepted_name VARCHAR(250) DEFAULT NULL,
@@ -38,13 +38,13 @@ area_name VARCHAR(500) DEFAULT NULL,
 infraspecies VARCHAR(250) DEFAULT NULL,
 occurrenceStatus VARCHAR(250) DEFAULT NULL,
 threatStatus VARCHAR(250) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
 $tbl_region_codes=$src."_region_codes";
-echo "  $tbl_region_codes`...";
+echo "  `$tbl_region_codes`...";
 $sql="
 DROP TABLE IF EXISTS `$tbl_region_codes`;
 CREATE TABLE $tbl_region_codes (
@@ -59,7 +59,7 @@ warning VARCHAR(500),
 notes VARCHAR(250),
 INDEX(code),
 INDEX(region)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
@@ -74,7 +74,7 @@ country_verbatim VARCHAR(250) DEFAULT NULL,
 state_province_verbatim VARCHAR(250) DEFAULT NULL,
 county_parish_verbatim VARCHAR(250) DEFAULT NULL,
 PRIMARY KEY (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 ";
 sql_execute_multiple($dbh, $sql);
@@ -85,7 +85,6 @@ echo "  `$tbl_poldivs_scrubbed`...";
 $sql="
 DROP TABLE IF EXISTS $tbl_poldivs_scrubbed;
 CREATE TABLE $tbl_poldivs_scrubbed (
-gnrs_id INT(11) UNSIGNED NOT NULL, 
 poldiv_full_verbatim VARCHAR(750) DEFAULT NULL,
 country_verbatim VARCHAR(250) DEFAULT NULL,
 state_province_verbatim VARCHAR(250) DEFAULT NULL,
@@ -107,12 +106,10 @@ poldiv_submitted VARCHAR(250) DEFAULT NULL,
 poldiv_matched VARCHAR(250) DEFAULT NULL,
 match_status VARCHAR(250) DEFAULT NULL,
 user_id VARCHAR(250) DEFAULT NULL,
-job VARCHAR(250) DEFAULT NULL,
 country_iso VARCHAR(250) DEFAULT NULL,
 state_province_iso VARCHAR(250) DEFAULT NULL,
-county_parish_iso VARCHAR(250) DEFAULT NULL,
-PRIMARY KEY (gnrs_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+county_parish_iso VARCHAR(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 ";
 sql_execute_multiple($dbh, $sql);

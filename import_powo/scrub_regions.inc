@@ -5,6 +5,17 @@
 // GNRS API and re-import results
 /////////////////////////////////////////////////////////
 
+/* 
+// Development only
+echo "####### WARNING: lines commented out in scrub_regions.inc! #########\n";
+$regions_raw_file = $datapath . "nsr_regions.csv";
+// Place above disabled section
+
+// Place below disabled section
+// END For development only
+*/
+
+
 // Parameter: set to true to echo sample of GNRS results to terminal
 // Should normally be set to false
 $echo_reponse=false;
@@ -34,7 +45,7 @@ namePublishedInYear,
 name,
 authors,
 species,
-rank,
+`rank`,
 reference,
 accepted_fqId,
 accepted_name,
@@ -78,7 +89,7 @@ a.namePublishedInYear,
 a.name,
 a.authors,
 a.species,
-a.rank,
+a.`rank`,
 a.reference,
 a.accepted_fqId,
 a.accepted_name,
@@ -264,11 +275,10 @@ if ($echo_reponse) {
 echo "Loading GNRS results to database...";
 foreach ($response as $idx => $obs) {
 	// Insert row to results table
-	$gnrs_id=$obs->id;
 	$country_verbatim=$obs->country_verbatim;
 	$state_province_verbatim=$obs->state_province_verbatim;
 	$county_parish_verbatim=$obs->county_parish_verbatim;
-	$poldiv_full=$obs->poldiv_full;
+	$poldiv_full_verbatim=$obs->poldiv_full;
 	$country=$obs->country;
 	$state_province=$obs->state_province;
 	$county_parish=$obs->county_parish;
@@ -285,14 +295,12 @@ foreach ($response as $idx => $obs) {
 	$poldiv_matched=$obs->poldiv_matched;
 	$match_status=$obs->match_status;
 	$user_id=$obs->user_id;
-	$job=$obs->job;
 	$country_iso=$obs->country_iso;
 	$state_province_iso=$obs->state_province_iso;
 	$county_parish_iso=$obs->county_parish_iso;
 
 	$sql="
 	INSERT INTO $tbl_poldivs_scrubbed (
-		gnrs_id,
 		poldiv_full_verbatim,
 		country_verbatim,
 		state_province_verbatim,
@@ -312,14 +320,11 @@ foreach ($response as $idx => $obs) {
 		poldiv_submitted,
 		poldiv_matched,
 		match_status,
-		user_id,
-		job,
 		country_iso,
 		state_province_iso,
 		county_parish_iso
 	)
 	VALUES (
-		'$gnrs_id',
 		'$poldiv_full_verbatim',
 		'$country_verbatim',
 		'$state_province_verbatim',
@@ -339,8 +344,6 @@ foreach ($response as $idx => $obs) {
 		'$poldiv_submitted',
 		'$poldiv_matched',
 		'$match_status',
-		'$user_id',
-		'$job',
 		'$country_iso',
 		'$state_province_iso',
 		'$county_parish_iso'
@@ -349,6 +352,18 @@ foreach ($response as $idx => $obs) {
 	";
 	sql_execute_multiple($dbh, $sql);
 }
+echo $done;
+
+# Remove duplicate rows from table
+echo "Removing duplicates from table `$tbl_poldivs_scrubbed`...";
+$tbl_tmp = $tbl_poldivs_scrubbed . "_tmp";
+$sql="
+CREATE TABLE $tbl_tmp LIKE $tbl_poldivs_scrubbed;
+INSERT INTO $tbl_tmp SELECT DISTINCT * FROM $tbl_poldivs_scrubbed;
+DROP TABLE $tbl_poldivs_scrubbed;
+ALTER TABLE $tbl_tmp RENAME $tbl_poldivs_scrubbed;
+";
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Updating column `poldiv_full` in table `$tbl_poldivs_scrubbed`...";
@@ -365,6 +380,14 @@ IFNULL(county_parish,'')
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
+echo "Making column `poldiv_full_verbatim` PK of table `$tbl_poldivs_scrubbed`...";
+$sql="
+ALTER TABLE $tbl_poldivs_scrubbed 
+ADD PRIMARY KEY (poldiv_full_verbatim)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
 
 echo "Transferring GNRS results to `$tbl_raw`...";
 $sql="

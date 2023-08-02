@@ -10,16 +10,16 @@ echo "  Standardizing ranks:\r\n";
 echo "    Column `rank`...";
 $sql="
 UPDATE $tbl_raw
-SET rank=
+SET `rank`=
 CASE
-WHEN rank='Form' THEN 'forma'
-WHEN rank='GENUS' THEN 'genus'
-WHEN rank='InfraspecificName' THEN 'infraspecific'
-WHEN rank='SPECIES' THEN 'species'
-WHEN rank='SUBSPECIES' THEN 'subspecies'
-WHEN rank='VARIETY' THEN 'variety'
-WHEN rank='Subvariety' THEN 'subvariety'
-ELSE rank
+WHEN `rank`='Form' THEN 'forma'
+WHEN `rank`='GENUS' THEN 'genus'
+WHEN `rank`='InfraspecificName' THEN 'infraspecific'
+WHEN `rank`='SPECIES' THEN 'species'
+WHEN `rank`='SUBSPECIES' THEN 'subspecies'
+WHEN `rank`='VARIETY' THEN 'variety'
+WHEN `rank`='Subvariety' THEN 'subvariety'
+ELSE `rank`
 END
 ;
 ";

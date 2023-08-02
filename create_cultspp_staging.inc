@@ -19,7 +19,7 @@ INDEX (source_name),
 INDEX (taxon),
 INDEX (taxon_rank),
 INDEX (is_in_db)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
 ";
 sql_execute_multiple($dbh, $sql);

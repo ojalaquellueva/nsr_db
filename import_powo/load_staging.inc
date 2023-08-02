@@ -26,7 +26,7 @@ state_province,
 county_parish,
 poldiv_full,
 name,
-rank,
+`rank`,
 establishment,
 NULL
 FROM $tbl_raw

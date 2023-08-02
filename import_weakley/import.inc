@@ -1,7 +1,9 @@
 <?php
 // Imports raw text file to mysql
-// $local, $fields_terminated_by, $optionally_enclosed_by, $lines_terminated_by and $ignore_lines
-// are set in parameters file
+// $local, $fields_terminated_by, $optionally_enclosed_by, $lines_terminated_by
+// and $ignore_lines are set in parameters file
+// NOTE: didn't implement $ROW_LIMIT for this source due to small size and 
+//   liklihood of broken links between the many tables
 
 echo "Loading raw data:\r\n";
 

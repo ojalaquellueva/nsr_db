@@ -15,7 +15,7 @@ CREATE TABLE $tbl_raw (
 `Genus`VARCHAR(50) DEFAULT NULL,
 `Family`VARCHAR(50) DEFAULT NULL,
 `NativeStatus`VARCHAR(500) DEFAULT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo "done";
