@@ -1,3 +1,6 @@
+***Note (Apr 10, 2024): this repository is now retired. NSR database code has been merged with main [NSR repository](https://github.com/ojalaquellueva/nsr) as subdirectory `db/`.***
+
+
 # NSR (Native Status Resolver) Database
 
 ### Overview
